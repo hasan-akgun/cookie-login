@@ -1,7 +1,15 @@
 const {connectDb, closeDb} = require("../config/configdb");
 
-const verifyUser = async (req, res)=>{
+const verifyUser = async (req, res, next)=>{
   const {name, password} = req.body;
+
+  if(req.session){
+    console.log("Session verified")
+    res.status(201).json({
+      success: true
+    })
+    return;
+  }
 
   try {
     const collection = await connectDb("users");
@@ -16,14 +24,13 @@ const verifyUser = async (req, res)=>{
     }
 
     if(user[0].password === password){
-      res.status(201).json({
-        success: true
-      })
+      next();
     }
     else{
       res.status(404).json({
         success: false
       })
+      return;
     }
     
   } catch (error) {
