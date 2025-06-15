@@ -12,6 +12,17 @@ div.d-flex.justify-content-center.bg-info.py-5.my-0
 h3#success.text-center.invisible Message sent
 
 script.
+
+  const loginWithSessionId = async ()=>{
+    const response = await fetch('http://localhost:3000/api/login')
+    const result = await response.json();
+    if(result.success===true){
+    window.location.href = '/dash'
+    }
+  };
+
+  loginWithSessionId();
+
   let name='';
   document.getElementById('nameInput').addEventListener('input', function(e) {
     name = e.target.value;
@@ -48,9 +59,7 @@ script.
         document.getElementById('success').classList.add('visible');
       }
       else{
-        document.getElementById('success').innerText = 'Message Sent!'
-        document.getElementById('success').classList.remove('invisible');
-        document.getElementById('success').classList.add('visible');
+        window.location.href = '/dash'
       }
       
       

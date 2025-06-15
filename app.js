@@ -4,6 +4,8 @@ const session = require("express-session");
 const app = express();
 require("dotenv").config();
 
+const {verifySessionId}= require("./src/middleware/verifySessionIdMiddleware")
+
 const loginRoute = require("./src/routes/loginRoute");
 
 app.set('view engine', 'pug')
@@ -15,7 +17,7 @@ app.use(cookieParser());
 app.use(session({
   secret: process.env.SECRET, // Güvenlik için önemli
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: { 
     maxAge: 1000 * 60 * 60,
     httpOnly: true, // XSS saldırılarına karşı koruma
@@ -28,6 +30,10 @@ app.use('/api/login', loginRoute)
 
 app.get('/', (req,res)=>{
   res.render('index');
+})
+
+app.get('/dash', verifySessionId,(req,res)=>{
+  res.render('dash');
 })
 
 try {
