@@ -1,7 +1,9 @@
-const verifySessionId = (req, res, next)=>{
+const verifySessionId = (req, res)=>{
   if(req.session && req.session.userName){
     console.log("Session verified")
-    next()
+    res.status(201).json({
+      success: true
+    })
   }else{
     console.log("wrong")
     res.status(500).json({
