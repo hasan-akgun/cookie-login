@@ -7,6 +7,7 @@ require("dotenv").config();
 const {verifySessionId}= require("./src/middleware/verifySessionIdMiddleware")
 
 const loginRoute = require("./src/routes/loginRoute");
+const dashRoute = require("./src/routes/dashRoute");
 
 app.set('view engine', 'pug')
 app.set('views', './views');
@@ -27,6 +28,8 @@ app.use(session({
 
 
 app.use('/api/login', loginRoute)
+app.use('/api/logout', dashRoute)
+
 
 app.get('/', (req,res)=>{
   res.render('index');
@@ -35,6 +38,7 @@ app.get('/', (req,res)=>{
 app.get('/dash', verifySessionId,(req,res)=>{
   res.render('dash');
 })
+
 
 try {
   app.listen(3000, ()=>{
